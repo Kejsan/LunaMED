@@ -30,12 +30,16 @@ export const Navigation = () => {
             <a href="#insights" className="text-sm font-light text-muted-foreground hover:text-foreground transition-colors">
               Insights
             </a>
-            <Button variant="ghost" size="sm" className="text-sm font-light">
-              Sign In
-            </Button>
-            <Button size="sm" className="bg-gradient-to-r from-primary to-secondary text-primary-foreground font-medium">
-              Get Started
-            </Button>
+            <a href="/auth">
+              <Button variant="ghost" size="sm" className="text-sm font-light">
+                Sign In
+              </Button>
+            </a>
+            <a href="/auth">
+              <Button size="sm" className="bg-gradient-to-r from-primary to-secondary text-primary-foreground font-medium">
+                Get Started
+              </Button>
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -61,12 +65,16 @@ export const Navigation = () => {
                 Insights
               </a>
               <div className="flex gap-3 mt-2">
-                <Button variant="ghost" size="sm" className="flex-1 text-sm font-light">
-                  Sign In
-                </Button>
-                <Button size="sm" className="flex-1 bg-gradient-to-r from-primary to-secondary text-primary-foreground font-medium">
-                  Get Started
-                </Button>
+                <a href="/auth" className="flex-1">
+                  <Button variant="ghost" size="sm" className="w-full text-sm font-light">
+                    Sign In
+                  </Button>
+                </a>
+                <a href="/auth" className="flex-1">
+                  <Button size="sm" className="w-full bg-gradient-to-r from-primary to-secondary text-primary-foreground font-medium">
+                    Get Started
+                  </Button>
+                </a>
               </div>
             </div>
           </div>

@@ -75,14 +75,18 @@ const Index = () => {
                 LunaMed combines beautiful design with science-backed insights for comprehensive period and fertility tracking.
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <a href="/auth">
                 <Button size="lg" className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-primary-foreground font-medium px-8 h-12 rounded-xl">
                   Start Tracking
                 </Button>
+              </a>
+              <a href="#features">
                 <Button size="lg" variant="outline" className="font-light h-12 rounded-xl border-border/50 hover:bg-muted/20">
                   Learn More
                 </Button>
-              </div>
+              </a>
+            </div>
             </div>
 
             {/* Right: Cycle Orb */}
@@ -211,9 +215,11 @@ const Index = () => {
             <p className="text-muted-foreground font-light text-lg mb-8">
               Join millions of women who track their cycles with LunaMed.
             </p>
-            <Button size="lg" className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-primary-foreground font-medium px-12 h-14 rounded-xl text-lg">
-              Get Started Free
-            </Button>
+            <a href="/auth">
+              <Button size="lg" className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-primary-foreground font-medium px-12 h-14 rounded-xl text-lg">
+                Get Started Free
+              </Button>
+            </a>
           </div>
         </div>
       </section>
