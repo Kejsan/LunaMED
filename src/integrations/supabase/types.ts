@@ -14,7 +14,186 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      cycles: {
+        Row: {
+          created_at: string
+          cycle_length: number | null
+          end_date: string | null
+          id: string
+          notes: string | null
+          period_length: number | null
+          start_date: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          cycle_length?: number | null
+          end_date?: string | null
+          id?: string
+          notes?: string | null
+          period_length?: number | null
+          start_date: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          cycle_length?: number | null
+          end_date?: string | null
+          id?: string
+          notes?: string | null
+          period_length?: number | null
+          start_date?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      daily_logs: {
+        Row: {
+          created_at: string
+          exercise_minutes: number | null
+          flow_intensity: Database["public"]["Enums"]["flow_intensity"] | null
+          id: string
+          log_date: string
+          moods: Database["public"]["Enums"]["mood_type"][] | null
+          notes: string | null
+          sleep_hours: number | null
+          symptoms: string[] | null
+          temperature: number | null
+          updated_at: string
+          user_id: string
+          weight: number | null
+        }
+        Insert: {
+          created_at?: string
+          exercise_minutes?: number | null
+          flow_intensity?: Database["public"]["Enums"]["flow_intensity"] | null
+          id?: string
+          log_date: string
+          moods?: Database["public"]["Enums"]["mood_type"][] | null
+          notes?: string | null
+          sleep_hours?: number | null
+          symptoms?: string[] | null
+          temperature?: number | null
+          updated_at?: string
+          user_id: string
+          weight?: number | null
+        }
+        Update: {
+          created_at?: string
+          exercise_minutes?: number | null
+          flow_intensity?: Database["public"]["Enums"]["flow_intensity"] | null
+          id?: string
+          log_date?: string
+          moods?: Database["public"]["Enums"]["mood_type"][] | null
+          notes?: string | null
+          sleep_hours?: number | null
+          symptoms?: string[] | null
+          temperature?: number | null
+          updated_at?: string
+          user_id?: string
+          weight?: number | null
+        }
+        Relationships: []
+      }
+      data_export_requests: {
+        Row: {
+          completed_at: string | null
+          download_url: string | null
+          expires_at: string | null
+          id: string
+          requested_at: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          download_url?: string | null
+          expires_at?: string | null
+          id?: string
+          requested_at?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          download_url?: string | null
+          expires_at?: string | null
+          id?: string
+          requested_at?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          default_cycle_length: number | null
+          default_period_length: number | null
+          display_name: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          default_cycle_length?: number | null
+          default_period_length?: number | null
+          display_name?: string | null
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          default_cycle_length?: number | null
+          default_period_length?: number | null
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_settings: {
+        Row: {
+          created_at: string
+          data_sharing_consent: boolean | null
+          gdpr_consent_date: string | null
+          id: string
+          notifications_enabled: boolean | null
+          ovulation_reminder: boolean | null
+          period_reminder_days: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          data_sharing_consent?: boolean | null
+          gdpr_consent_date?: string | null
+          id?: string
+          notifications_enabled?: boolean | null
+          ovulation_reminder?: boolean | null
+          period_reminder_days?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          data_sharing_consent?: boolean | null
+          gdpr_consent_date?: string | null
+          id?: string
+          notifications_enabled?: boolean | null
+          ovulation_reminder?: boolean | null
+          period_reminder_days?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +202,16 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      flow_intensity: "none" | "light" | "medium" | "heavy"
+      mood_type:
+        | "happy"
+        | "calm"
+        | "anxious"
+        | "sad"
+        | "irritable"
+        | "energetic"
+        | "tired"
+        | "neutral"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +338,18 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      flow_intensity: ["none", "light", "medium", "heavy"],
+      mood_type: [
+        "happy",
+        "calm",
+        "anxious",
+        "sad",
+        "irritable",
+        "energetic",
+        "tired",
+        "neutral",
+      ],
+    },
   },
 } as const
