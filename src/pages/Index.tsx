@@ -4,13 +4,16 @@ import { Moon, Shield, Lock, Sparkles, FileText, Brain, Star, ChevronRight, Menu
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Logo } from "@/components/layout/Logo";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { BackgroundEffects } from "@/components/layout/BackgroundEffects";
+import { LanguageSelector } from "@/components/LanguageSelector";
 
 const Index = () => {
   const { isCelestial } = useTheme();
   const { user } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [cycleDay] = useState(14);
@@ -51,6 +54,7 @@ const Index = () => {
             </div>
 
             <div className="flex items-center gap-3">
+              <LanguageSelector variant="compact" />
               <ThemeToggle />
               <Button
                 onClick={() => navigate("/auth")}
@@ -60,7 +64,7 @@ const Index = () => {
                     : "bg-primary hover:bg-primary/90"
                 }`}
               >
-                Start Tracking
+                {t("getStarted")}
               </Button>
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
