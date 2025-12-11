@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Settings, User, Bell, Calendar, Shield } from "lucide-react";
+import { Settings, User, Bell, Calendar, Shield, Globe } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -9,6 +9,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { LanguageSelector } from "@/components/LanguageSelector";
 import type { Tables } from "@/integrations/supabase/types";
 
 type Profile = Tables<"profiles">;
@@ -25,6 +27,7 @@ interface SettingsModalProps {
 export const SettingsModal = ({ open, onOpenChange, profile, settings, onSave }: SettingsModalProps) => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { t } = useLanguage();
   
   const [displayName, setDisplayName] = useState("");
   const [cycleLength, setCycleLength] = useState(28);
@@ -125,7 +128,7 @@ export const SettingsModal = ({ open, onOpenChange, profile, settings, onSave }:
 
           <TabsContent value="profile" className="space-y-4 mt-4">
             <div className="space-y-2">
-              <Label>Display Name</Label>
+              <Label>{t("displayName")}</Label>
               <Input
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
@@ -134,12 +137,16 @@ export const SettingsModal = ({ open, onOpenChange, profile, settings, onSave }:
               />
             </div>
             <div className="space-y-2">
-              <Label>Email</Label>
+              <Label>{t("email")}</Label>
               <Input
                 value={user?.email || ""}
                 disabled
                 className="bg-muted/10 border-border/50 rounded-xl text-muted-foreground"
               />
+            </div>
+            <div className="space-y-2">
+              <Label>{t("language")}</Label>
+              <LanguageSelector />
             </div>
           </TabsContent>
 
