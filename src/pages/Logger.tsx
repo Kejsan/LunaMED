@@ -10,15 +10,15 @@ import { useToast } from "@/hooks/use-toast";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { format, differenceInDays } from "date-fns";
 
-type FlowIntensity = "none" | "spot" | "light" | "medium" | "heavy";
+type FlowIntensity = "none" | "light" | "medium" | "heavy";
 type MoodType = "happy" | "calm" | "anxious" | "sad" | "irritable" | "energetic" | "tired" | "neutral";
 
 const Logger = () => {
   const { user } = useAuth();
-  const { theme } = useTheme();
+  const { isCelestial } = useTheme();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const isDark = theme === "celestial";
+  const isDark = isCelestial;
 
   const [currentDate, setCurrentDate] = useState(new Date());
   const [tab, setTab] = useState<"flow" | "physical" | "mood">("flow");
@@ -155,7 +155,6 @@ const Logger = () => {
 
   const flowOptions: { value: FlowIntensity; label: string }[] = [
     { value: "none", label: "None" },
-    { value: "spot", label: "Spot" },
     { value: "light", label: "Light" },
     { value: "medium", label: "Med" },
     { value: "heavy", label: "Heavy" },
@@ -288,7 +287,7 @@ const Logger = () => {
                       }`}
                     >
                       <div className="text-2xl mb-1">
-                        {opt.value === "none" ? "○" : opt.value === "spot" ? "◔" : opt.value === "light" ? "◑" : opt.value === "medium" ? "◕" : "●"}
+                        {opt.value === "none" ? "○" : opt.value === "light" ? "◔" : opt.value === "medium" ? "◑" : "●"}
                       </div>
                       <p className="text-xs">{opt.label}</p>
                     </button>

@@ -21,9 +21,9 @@ interface DailyLog {
 
 const Calendar = () => {
   const { user } = useAuth();
-  const { theme } = useTheme();
+  const { isCelestial } = useTheme();
   const navigate = useNavigate();
-  const isDark = theme === "celestial";
+  const isDark = isCelestial;
 
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [cycles, setCycles] = useState<Cycle[]>([]);

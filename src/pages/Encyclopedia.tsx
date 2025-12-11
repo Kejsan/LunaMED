@@ -97,8 +97,8 @@ const glossaryTerms = [
 ];
 
 const Encyclopedia = () => {
-  const { theme } = useTheme();
-  const isDark = theme === "celestial";
+  const { isCelestial } = useTheme();
+  const isDark = isCelestial;
 
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
