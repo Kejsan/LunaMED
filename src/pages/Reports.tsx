@@ -29,10 +29,10 @@ interface DailyLog {
 
 const Reports = () => {
   const { user } = useAuth();
-  const { theme } = useTheme();
+  const { isCelestial } = useTheme();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const isDark = theme === "celestial";
+  const isDark = isCelestial;
 
   const [profile, setProfile] = useState<Profile | null>(null);
   const [cycles, setCycles] = useState<Cycle[]>([]);

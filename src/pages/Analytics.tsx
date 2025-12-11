@@ -22,9 +22,9 @@ interface DailyLog {
 
 const Analytics = () => {
   const { user } = useAuth();
-  const { theme } = useTheme();
+  const { isCelestial } = useTheme();
   const navigate = useNavigate();
-  const isDark = theme === "celestial";
+  const isDark = isCelestial;
 
   const [cycles, setCycles] = useState<Cycle[]>([]);
   const [logs, setLogs] = useState<DailyLog[]>([]);

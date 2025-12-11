@@ -15,10 +15,10 @@ type Goal = "track" | "conceive" | "avoid" | null;
 
 const Setup = () => {
   const { user } = useAuth();
-  const { theme } = useTheme();
+  const { isCelestial } = useTheme();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const isDark = theme === "celestial";
+  const isDark = isCelestial;
 
   const [step, setStep] = useState(1);
   const [goal, setGoal] = useState<Goal>(null);

@@ -16,9 +16,9 @@ interface DailyLog {
 
 const Insight = () => {
   const { user } = useAuth();
-  const { theme } = useTheme();
+  const { isCelestial } = useTheme();
   const navigate = useNavigate();
-  const isDark = theme === "celestial";
+  const isDark = isCelestial;
 
   const [todayLog, setTodayLog] = useState<DailyLog | null>(null);
   const [cycleDay, setCycleDay] = useState(14);
