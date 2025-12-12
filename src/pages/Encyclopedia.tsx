@@ -2,110 +2,114 @@ import { useState } from "react";
 import { Search, BookOpen, Heart, Shield, UtensilsCrossed, ChevronRight, Star } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { AppLayout } from "@/components/layout/AppLayout";
 
 interface Article {
   id: string;
-  title: string;
-  description: string;
+  titleKey: string;
+  descriptionKey: string;
   category: string;
   readTime: string;
   reviewed: boolean;
 }
 
-const articles: Article[] = [
-  {
-    id: "1",
-    title: "The Four Seasons of Your Cycle",
-    description: "Understanding the distinct phases: Menstrual, Follicular, Ovulatory, and Luteal, and how to harness their energy.",
-    category: "biology",
-    readTime: "6 min",
-    reviewed: true,
-  },
-  {
-    id: "2",
-    title: "Polycystic Ovary Syndrome (PCOS)",
-    description: "A comprehensive guide to symptoms, diagnosis criteria, and the latest management strategies.",
-    category: "disorders",
-    readTime: "12 min",
-    reviewed: true,
-  },
-  {
-    id: "3",
-    title: "Seed Cycling: Myth or Magic?",
-    description: "Investigating the science behind rotating flax, pumpkin, sesame, and sunflower seeds to balance hormones.",
-    category: "nutrition",
-    readTime: "5 min",
-    reviewed: false,
-  },
-  {
-    id: "4",
-    title: "Endometriosis Pain Management",
-    description: "Clinical approaches and holistic therapies for managing flare-ups and chronic pelvic pain.",
-    category: "disorders",
-    readTime: "8 min",
-    reviewed: true,
-  },
-  {
-    id: "5",
-    title: "Choosing the Right Contraceptive",
-    description: "Comparing hormonal IUDs, copper IUDs, pills, and patches based on lifestyle and biology.",
-    category: "birth-control",
-    readTime: "10 min",
-    reviewed: true,
-  },
-  {
-    id: "6",
-    title: "Iron-Rich Foods for Menstruation",
-    description: "Combat fatigue during your period with this curated list of heme and non-heme iron sources.",
-    category: "nutrition",
-    readTime: "4 min",
-    reviewed: true,
-  },
-  {
-    id: "7",
-    title: "The Gut-Hormone Connection",
-    description: "New research suggests that your microbiome plays a bigger role in PMS symptoms than previously thought.",
-    category: "biology",
-    readTime: "8 min",
-    reviewed: true,
-  },
-  {
-    id: "8",
-    title: "Understanding Amenorrhea",
-    description: "When periods stop: causes, implications, and when to seek medical attention.",
-    category: "disorders",
-    readTime: "7 min",
-    reviewed: true,
-  },
-];
-
-const categories = [
-  { id: "all", label: "All", icon: BookOpen },
-  { id: "biology", label: "Biology 101", icon: Heart },
-  { id: "disorders", label: "Disorders", icon: Shield },
-  { id: "birth-control", label: "Birth Control", icon: Shield },
-  { id: "nutrition", label: "Nutrition", icon: UtensilsCrossed },
-];
-
-const popularTags = ["PCOS", "Endometriosis", "Ovulation", "Sleep"];
-
-const glossaryTerms = [
-  { term: "Luteal Phase", definition: "The second half of the menstrual cycle, after ovulation." },
-  { term: "Progesterone", definition: "Hormone released by the corpus luteum preparing body for pregnancy." },
-  { term: "Amenorrhea", definition: "The absence of menstruation, often defined as missing one or more periods." },
-];
-
 const Encyclopedia = () => {
   const { isCelestial } = useTheme();
+  const { t } = useLanguage();
   const isDark = isCelestial;
 
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
 
+  const articles: Article[] = [
+    {
+      id: "1",
+      titleKey: "articleFourSeasons",
+      descriptionKey: "articleFourSeasonsDesc",
+      category: "biology",
+      readTime: "6",
+      reviewed: true,
+    },
+    {
+      id: "2",
+      titleKey: "articlePCOS",
+      descriptionKey: "articlePCOSDesc",
+      category: "disorders",
+      readTime: "12",
+      reviewed: true,
+    },
+    {
+      id: "3",
+      titleKey: "articleSeedCycling",
+      descriptionKey: "articleSeedCyclingDesc",
+      category: "nutrition",
+      readTime: "5",
+      reviewed: false,
+    },
+    {
+      id: "4",
+      titleKey: "articleEndometriosis",
+      descriptionKey: "articleEndometriosisDesc",
+      category: "disorders",
+      readTime: "8",
+      reviewed: true,
+    },
+    {
+      id: "5",
+      titleKey: "articleContraceptive",
+      descriptionKey: "articleContraceptiveDesc",
+      category: "birth-control",
+      readTime: "10",
+      reviewed: true,
+    },
+    {
+      id: "6",
+      titleKey: "articleIronFoods",
+      descriptionKey: "articleIronFoodsDesc",
+      category: "nutrition",
+      readTime: "4",
+      reviewed: true,
+    },
+    {
+      id: "7",
+      titleKey: "articleGutHormone",
+      descriptionKey: "articleGutHormoneDesc",
+      category: "biology",
+      readTime: "8",
+      reviewed: true,
+    },
+    {
+      id: "8",
+      titleKey: "articleAmenorrhea",
+      descriptionKey: "articleAmenorrheaDesc",
+      category: "disorders",
+      readTime: "7",
+      reviewed: true,
+    },
+  ];
+
+  const categories = [
+    { id: "all", labelKey: "all" as const, icon: BookOpen },
+    { id: "biology", labelKey: "biology101" as const, icon: Heart },
+    { id: "disorders", labelKey: "disorders" as const, icon: Shield },
+    { id: "birth-control", labelKey: "birthControl" as const, icon: Shield },
+    { id: "nutrition", labelKey: "nutrition" as const, icon: UtensilsCrossed },
+  ];
+
+  const popularTags = ["PCOS", "Endometriosis", "Ovulation", "Sleep"];
+
+  const glossaryTerms = [
+    { termKey: "glossaryLutealPhase" as const, definitionKey: "glossaryLutealPhaseDef" as const },
+    { termKey: "glossaryProgesterone" as const, definitionKey: "glossaryProgesteroneDef" as const },
+    { termKey: "glossaryAmenorrhea" as const, definitionKey: "glossaryAmenorrheaDef" as const },
+  ];
+
   const filteredArticles = articles.filter((article) => {
-    const matchesSearch = article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      article.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const title = t(article.titleKey as any);
+    const description = t(article.descriptionKey as any);
+    const matchesSearch = title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      description.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = activeCategory === "all" || article.category === activeCategory;
     return matchesSearch && matchesCategory;
   });
@@ -118,10 +122,10 @@ const Encyclopedia = () => {
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto">
           <h1 className={`text-4xl font-bold mb-4 ${isDark ? 'text-gradient-celestial' : 'text-gradient-science'}`}>
-            {isDark ? "Cosmic Knowledge Base" : "Health Encyclopedia"}
+            {isDark ? t("cosmicKnowledgeBase") : t("healthEncyclopedia")}
           </h1>
           <p className="text-muted-foreground mb-6">
-            {isDark ? "Wisdom for your cycle, body, and soul" : "Evidence-based information for your health journey"}
+            {isDark ? t("wisdomForCycle") : t("evidenceBasedInfo")}
           </p>
           
           {/* Search */}
@@ -129,7 +133,7 @@ const Encyclopedia = () => {
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
             <Input
               type="text"
-              placeholder="Search for symptoms, biology, or nutrition..."
+              placeholder={t("searchPlaceholder")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-12 h-14 text-lg"
@@ -138,7 +142,7 @@ const Encyclopedia = () => {
           
           {/* Popular Tags */}
           <div className="flex items-center justify-center gap-2 mt-4">
-            <span className="text-sm text-muted-foreground">Popular:</span>
+            <span className="text-sm text-muted-foreground">{t("popular")}:</span>
             {popularTags.map((tag) => (
               <button
                 key={tag}
@@ -164,7 +168,7 @@ const Encyclopedia = () => {
               }`}
             >
               <cat.icon className="w-4 h-4" />
-              {cat.label}
+              {t(cat.labelKey)}
             </button>
           ))}
         </div>
@@ -173,16 +177,16 @@ const Encyclopedia = () => {
         {featuredArticle && activeCategory === "all" && !searchQuery && (
           <div className={`p-6 rounded-2xl ${isDark ? 'glass-dark' : 'glass-light'} relative overflow-hidden`}>
             <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-primary/20 text-primary text-xs font-medium">
-              Editor's Pick
+              {t("editorsPick")}
             </div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-xs text-muted-foreground">Medically Reviewed</span>
+              <span className="text-xs text-muted-foreground">{t("medicallyReviewed")}</span>
               <Star className="w-3 h-3 fill-yellow-500 text-yellow-500" />
             </div>
-            <h2 className="text-2xl font-bold mb-2">{featuredArticle.title}</h2>
-            <p className="text-muted-foreground mb-4">{featuredArticle.description}</p>
+            <h2 className="text-2xl font-bold mb-2">{t(featuredArticle.titleKey as any)}</h2>
+            <p className="text-muted-foreground mb-4">{t(featuredArticle.descriptionKey as any)}</p>
             <button className="text-primary font-medium flex items-center gap-1 hover:underline">
-              Read Article <ChevronRight className="w-4 h-4" />
+              {t("readArticle")} <ChevronRight className="w-4 h-4" />
             </button>
           </div>
         )}
@@ -190,13 +194,13 @@ const Encyclopedia = () => {
         {/* Articles Grid */}
         <div className="grid md:grid-cols-2 gap-6">
           {filteredArticles.map((article) => (
-            <ArticleCard key={article.id} article={article} isDark={isDark} />
+            <ArticleCard key={article.id} article={article} isDark={isDark} t={t} />
           ))}
         </div>
 
         {filteredArticles.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-muted-foreground">No articles found matching your search.</p>
+            <p className="text-muted-foreground">{t("noArticlesFound")}</p>
           </div>
         )}
 
@@ -210,9 +214,9 @@ const Encyclopedia = () => {
               </div>
               <div>
                 <p className="font-medium mb-2">Dr. Sarah Chen, MD</p>
-                <p className="text-sm text-muted-foreground mb-1">Chief Medical Officer</p>
+                <p className="text-sm text-muted-foreground mb-1">{t("chiefMedicalOfficer")}</p>
                 <blockquote className="italic text-muted-foreground">
-                  "Knowledge is the first step to hormonal balance. Search our library or ask a direct question."
+                  "{t("expertQuote")}"
                 </blockquote>
               </div>
             </div>
@@ -220,17 +224,17 @@ const Encyclopedia = () => {
 
           {/* Quick Glossary */}
           <div className={`p-6 rounded-2xl ${isDark ? 'glass-dark' : 'glass-light'}`}>
-            <h3 className="font-semibold mb-4">Quick Glossary</h3>
+            <h3 className="font-semibold mb-4">{t("quickGlossary")}</h3>
             <div className="space-y-4">
               {glossaryTerms.map((item) => (
-                <div key={item.term}>
-                  <p className="font-medium text-sm">{item.term}</p>
-                  <p className="text-xs text-muted-foreground">{item.definition}</p>
+                <div key={item.termKey}>
+                  <p className="font-medium text-sm">{t(item.termKey)}</p>
+                  <p className="text-xs text-muted-foreground">{t(item.definitionKey)}</p>
                 </div>
               ))}
             </div>
             <button className="mt-4 text-sm text-primary hover:underline flex items-center gap-1">
-              View A-Z Index <ChevronRight className="w-4 h-4" />
+              {t("viewAZIndex")} <ChevronRight className="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -242,9 +246,10 @@ const Encyclopedia = () => {
 interface ArticleCardProps {
   article: Article;
   isDark: boolean;
+  t: (key: any) => string;
 }
 
-const ArticleCard = ({ article, isDark }: ArticleCardProps) => {
+const ArticleCard = ({ article, isDark, t }: ArticleCardProps) => {
   const categoryColors: Record<string, string> = {
     biology: "bg-blue-500/20 text-blue-500",
     disorders: "bg-red-500/20 text-red-500",
@@ -252,21 +257,31 @@ const ArticleCard = ({ article, isDark }: ArticleCardProps) => {
     nutrition: "bg-green-500/20 text-green-500",
   };
 
+  const getCategoryLabel = (category: string) => {
+    switch (category) {
+      case "biology": return t("biology101");
+      case "disorders": return t("disorders");
+      case "birth-control": return t("birthControl");
+      case "nutrition": return t("nutrition");
+      default: return category;
+    }
+  };
+
   return (
     <div className={`p-6 rounded-2xl ${isDark ? 'glass-dark' : 'glass-light'} hover:scale-[1.02] transition-transform cursor-pointer`}>
       <div className="flex items-center gap-2 mb-3">
         <span className={`px-2 py-1 rounded-full text-xs font-medium ${categoryColors[article.category] || 'bg-muted'}`}>
-          {article.category.replace("-", " ").toUpperCase()}
+          {getCategoryLabel(article.category).toUpperCase()}
         </span>
-        <span className="text-xs text-muted-foreground">{article.readTime} read</span>
+        <span className="text-xs text-muted-foreground">{article.readTime} {t("minRead")}</span>
         {article.reviewed && (
-          <span className="text-xs text-muted-foreground">• Reviewed</span>
+          <span className="text-xs text-muted-foreground">• {t("reviewed")}</span>
         )}
       </div>
-      <h3 className="text-lg font-semibold mb-2">{article.title}</h3>
-      <p className="text-muted-foreground text-sm mb-4">{article.description}</p>
+      <h3 className="text-lg font-semibold mb-2">{t(article.titleKey as any)}</h3>
+      <p className="text-muted-foreground text-sm mb-4">{t(article.descriptionKey as any)}</p>
       <button className="text-primary font-medium text-sm flex items-center gap-1 hover:underline">
-        Read Article <ChevronRight className="w-4 h-4" />
+        {t("readArticle")} <ChevronRight className="w-4 h-4" />
       </button>
     </div>
   );

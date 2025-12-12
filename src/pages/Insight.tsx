@@ -4,6 +4,7 @@ import { CheckCircle, Moon, Sparkles, Activity, UtensilsCrossed, Calendar, Chevr
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { format, differenceInDays } from "date-fns";
@@ -17,6 +18,7 @@ interface DailyLog {
 const Insight = () => {
   const { user } = useAuth();
   const { isCelestial } = useTheme();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const isDark = isCelestial;
 
@@ -52,10 +54,10 @@ const Insight = () => {
   };
 
   const getPhase = () => {
-    if (cycleDay <= 5) return "Menstrual";
-    if (cycleDay <= 13) return "Follicular";
-    if (cycleDay <= 16) return "Ovulation";
-    return "Luteal";
+    if (cycleDay <= 5) return t("menstrual");
+    if (cycleDay <= 13) return t("follicular");
+    if (cycleDay <= 16) return t("ovulation");
+    return t("luteal");
   };
 
   const phase = getPhase();
@@ -79,24 +81,30 @@ const Insight = () => {
 
   const moonPhase = getMoonPhase();
 
-  const recommendations = {
-    movement: phase === "Menstrual" 
-      ? { title: "Gentle Yoga", desc: "Restorative poses to ease tension", time: "15 min" }
-      : phase === "Ovulation"
-      ? { title: "High Intensity", desc: "Your energy peaks - go all out!", time: "45 min" }
-      : { title: "Cat-Cow Flow", desc: "Move energy through your spine", time: "10 min" },
-    nutrition: phase === "Menstrual"
-      ? { title: "Iron-Rich Foods", desc: "Replenish with spinach, lentils, red meat" }
-      : phase === "Luteal"
-      ? { title: "Magnesium Tea", desc: "Warm cacao or herbal tea to soothe" }
-      : { title: "Leafy Greens", desc: "Support hormone balance" },
+  const getRecommendations = () => {
+    const phaseKey = cycleDay <= 5 ? "menstrual" : cycleDay <= 16 ? "ovulation" : "luteal";
+    
+    return {
+      movement: phaseKey === "menstrual" 
+        ? { title: t("gentleYoga"), desc: t("gentleYogaDesc"), time: "15 min" }
+        : phaseKey === "ovulation"
+        ? { title: t("highIntensity"), desc: t("highIntensityDesc"), time: "45 min" }
+        : { title: t("catCowFlow"), desc: t("catCowFlowDesc"), time: "10 min" },
+      nutrition: phaseKey === "menstrual"
+        ? { title: t("ironRichFoods"), desc: t("ironRichFoodsDesc") }
+        : phaseKey === "luteal"
+        ? { title: t("magnesiumTea"), desc: t("magnesiumTeaDesc") }
+        : { title: t("leafyGreens"), desc: t("leafyGreensDesc") },
+    };
   };
+
+  const recommendations = getRecommendations();
 
   if (loading) {
     return (
       <AppLayout>
         <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="animate-pulse text-muted-foreground">Loading insights...</div>
+          <div className="animate-pulse text-muted-foreground">{t("loadingInsights")}</div>
         </div>
       </AppLayout>
     );
@@ -112,8 +120,8 @@ const Insight = () => {
               <CheckCircle className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <h2 className="font-semibold text-lg">Data Logged Successfully</h2>
-              <p className="text-muted-foreground">Your daily insights are ready</p>
+              <h2 className="font-semibold text-lg">{t("dataLoggedSuccess")}</h2>
+              <p className="text-muted-foreground">{t("dailyInsightsReady")}</p>
             </div>
           </div>
         )}
@@ -121,7 +129,7 @@ const Insight = () => {
         {/* Cosmic Summary */}
         <div className={`p-6 rounded-2xl ${isDark ? 'glass-dark' : 'glass-light'}`}>
           <h3 className="text-sm uppercase tracking-wide text-muted-foreground mb-4">
-            {isDark ? "Cosmic Summary" : "Daily Summary"}
+            {isDark ? t("cosmicSummary") : t("dailySummary")}
           </h3>
           
           <div className="grid md:grid-cols-2 gap-6">
@@ -129,7 +137,7 @@ const Insight = () => {
             <div className="space-y-4">
               {todayLog?.symptoms && todayLog.symptoms.length > 0 && (
                 <div>
-                  <p className="text-sm text-muted-foreground mb-2">Symptoms</p>
+                  <p className="text-sm text-muted-foreground mb-2">{t("symptoms")}</p>
                   <div className="flex flex-wrap gap-2">
                     {todayLog.symptoms.map((s) => (
                       <span key={s} className="px-3 py-1 rounded-full bg-muted text-sm">{s}</span>
@@ -140,14 +148,14 @@ const Insight = () => {
               
               {todayLog?.moods && todayLog.moods.length > 0 && (
                 <div>
-                  <p className="text-sm text-muted-foreground mb-2">Mood</p>
+                  <p className="text-sm text-muted-foreground mb-2">{t("mood")}</p>
                   <p className="font-medium capitalize">{todayLog.moods.join(", ")}</p>
                 </div>
               )}
               
               <div>
-                <p className="text-sm text-muted-foreground mb-2">Cycle Info</p>
-                <p className="font-medium">Cycle Day {cycleDay} • {phase} Phase</p>
+                <p className="text-sm text-muted-foreground mb-2">{t("cycleInfo")}</p>
+                <p className="font-medium">{t("cycleDay")} {cycleDay} • {phase}</p>
               </div>
             </div>
 
@@ -156,7 +164,7 @@ const Insight = () => {
               <div className="text-center">
                 <div className="text-6xl mb-2">{moonPhase.emoji}</div>
                 <p className="font-semibold">{moonPhase.name}</p>
-                <p className="text-sm text-muted-foreground">Illumination: {moonPhase.illumination}%</p>
+                <p className="text-sm text-muted-foreground">{t("illumination")}: {moonPhase.illumination}%</p>
               </div>
             )}
           </div>
@@ -175,7 +183,7 @@ const Insight = () => {
           <div className={`p-6 rounded-2xl glass-dark`}>
             <div className="flex items-center gap-2 mb-4">
               <Sparkles className="w-5 h-5 text-primary" />
-              <h3 className="font-semibold">Astrological Alignment</h3>
+              <h3 className="font-semibold">{t("astrologicalAlignment")}</h3>
             </div>
             <p className="text-muted-foreground leading-relaxed">
               You reported {todayLog.symptoms.slice(0, 2).join(" and ")}. With the moon in {moonPhase.name.toLowerCase()}, 
@@ -183,9 +191,9 @@ const Insight = () => {
               {moonPhase.name.includes("Waxing") ? " refine your plans before acting" : " release what no longer serves you"}.
             </p>
             <div className="flex gap-3 mt-4">
-              <Button variant="default" size="sm">Start Ritual</Button>
+              <Button variant="default" size="sm">{t("startRitual")}</Button>
               <Button variant="outline" size="sm" asChild>
-                <Link to="/logger">Log More Details</Link>
+                <Link to="/logger">{t("logMoreDetails")}</Link>
               </Button>
             </div>
           </div>
@@ -196,7 +204,7 @@ const Insight = () => {
           <div className={`p-6 rounded-2xl ${isDark ? 'glass-dark' : 'glass-light'}`}>
             <div className="flex items-center gap-2 mb-4">
               <Activity className="w-5 h-5 text-primary" />
-              <h3 className="font-semibold">Movement</h3>
+              <h3 className="font-semibold">{t("movement")}</h3>
             </div>
             <h4 className="text-lg font-medium mb-1">{recommendations.movement.title}</h4>
             <p className="text-muted-foreground text-sm mb-3">{recommendations.movement.desc}</p>
@@ -206,7 +214,7 @@ const Insight = () => {
           <div className={`p-6 rounded-2xl ${isDark ? 'glass-dark' : 'glass-light'}`}>
             <div className="flex items-center gap-2 mb-4">
               <UtensilsCrossed className="w-5 h-5 text-primary" />
-              <h3 className="font-semibold">Nutrition</h3>
+              <h3 className="font-semibold">{t("nutrition")}</h3>
             </div>
             <h4 className="text-lg font-medium mb-1">{recommendations.nutrition.title}</h4>
             <p className="text-muted-foreground text-sm">{recommendations.nutrition.desc}</p>
@@ -218,10 +226,10 @@ const Insight = () => {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Calendar className="w-5 h-5 text-primary" />
-              <h3 className="font-semibold">The Week Ahead</h3>
+              <h3 className="font-semibold">{t("weekAhead")}</h3>
             </div>
             <Link to="/calendar" className="text-sm text-primary hover:underline flex items-center gap-1">
-              Full Calendar <ChevronRight className="w-4 h-4" />
+              {t("fullCalendar")} <ChevronRight className="w-4 h-4" />
             </Link>
           </div>
           
@@ -238,7 +246,7 @@ const Insight = () => {
                     isToday ? 'bg-primary text-primary-foreground' : 'bg-muted/50'
                   }`}
                 >
-                  <p className="text-xs text-muted-foreground mb-1">Day {day}</p>
+                  <p className="text-xs text-muted-foreground mb-1">{t("day")} {day}</p>
                   <p className="font-bold">{futurePhase}</p>
                 </div>
               );
@@ -249,10 +257,10 @@ const Insight = () => {
         {/* Actions */}
         <div className="flex gap-4">
           <Button asChild className="flex-1">
-            <Link to="/dashboard">Back to Dashboard</Link>
+            <Link to="/dashboard">{t("backToDashboard")}</Link>
           </Button>
           <Button variant="outline" asChild className="flex-1">
-            <Link to="/logger">Log More</Link>
+            <Link to="/logger">{t("logMore")}</Link>
           </Button>
         </div>
       </div>

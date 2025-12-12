@@ -106,7 +106,7 @@ export const SettingsModal = ({ open, onOpenChange, profile, settings, onSave }:
         <DialogHeader>
           <DialogTitle className="text-xl font-light flex items-center gap-2">
             <Settings className="w-5 h-5 text-primary" />
-            Settings
+            {t("settings")}
           </DialogTitle>
         </DialogHeader>
 
@@ -114,15 +114,15 @@ export const SettingsModal = ({ open, onOpenChange, profile, settings, onSave }:
           <TabsList className="w-full bg-muted/20 rounded-xl p-1">
             <TabsTrigger value="profile" className="flex-1 rounded-lg data-[state=active]:bg-primary/20">
               <User className="w-4 h-4 mr-2" />
-              Profile
+              {t("profile")}
             </TabsTrigger>
             <TabsTrigger value="cycle" className="flex-1 rounded-lg data-[state=active]:bg-primary/20">
               <Calendar className="w-4 h-4 mr-2" />
-              Cycle
+              {t("cycle")}
             </TabsTrigger>
             <TabsTrigger value="privacy" className="flex-1 rounded-lg data-[state=active]:bg-primary/20">
               <Shield className="w-4 h-4 mr-2" />
-              Privacy
+              {t("privacySettings")}
             </TabsTrigger>
           </TabsList>
 
@@ -152,7 +152,7 @@ export const SettingsModal = ({ open, onOpenChange, profile, settings, onSave }:
 
           <TabsContent value="cycle" className="space-y-4 mt-4">
             <div className="space-y-2">
-              <Label>Average Cycle Length (days)</Label>
+              <Label>{t("averageCycleLength")}</Label>
               <Input
                 type="number"
                 min={21}
@@ -163,7 +163,7 @@ export const SettingsModal = ({ open, onOpenChange, profile, settings, onSave }:
               />
             </div>
             <div className="space-y-2">
-              <Label>Average Period Length (days)</Label>
+              <Label>{t("averagePeriodLength")}</Label>
               <Input
                 type="number"
                 min={1}
@@ -175,8 +175,8 @@ export const SettingsModal = ({ open, onOpenChange, profile, settings, onSave }:
             </div>
             <div className="flex items-center justify-between py-2">
               <div>
-                <Label>Period Reminders</Label>
-                <p className="text-xs text-muted-foreground">Get notified before your period</p>
+                <Label>{t("periodReminders")}</Label>
+                <p className="text-xs text-muted-foreground">{t("getNotifiedBeforePeriod")}</p>
               </div>
               <Switch
                 checked={notificationsEnabled}
@@ -185,7 +185,7 @@ export const SettingsModal = ({ open, onOpenChange, profile, settings, onSave }:
             </div>
             {notificationsEnabled && (
               <div className="space-y-2 pl-4 border-l-2 border-primary/30">
-                <Label className="text-sm">Remind me (days before)</Label>
+                <Label className="text-sm">{t("remindDaysBefore")}</Label>
                 <Input
                   type="number"
                   min={1}
@@ -198,8 +198,8 @@ export const SettingsModal = ({ open, onOpenChange, profile, settings, onSave }:
             )}
             <div className="flex items-center justify-between py-2">
               <div>
-                <Label>Ovulation Reminders</Label>
-                <p className="text-xs text-muted-foreground">Get notified during fertile window</p>
+                <Label>{t("ovulationReminders")}</Label>
+                <p className="text-xs text-muted-foreground">{t("notifyFertileWindow")}</p>
               </div>
               <Switch
                 checked={ovulationReminder}
@@ -210,17 +210,16 @@ export const SettingsModal = ({ open, onOpenChange, profile, settings, onSave }:
 
           <TabsContent value="privacy" className="space-y-4 mt-4">
             <div className="glass-dark rounded-xl p-4 bg-primary/5">
-              <h4 className="font-medium mb-2">Your Data Rights (GDPR)</h4>
+              <h4 className="font-medium mb-2">{t("dataRights")}</h4>
               <p className="text-sm text-muted-foreground font-light">
-                You have the right to access, export, and delete your data at any time. 
-                Use the controls on your dashboard to manage your data.
+                {t("dataRightsDesc")}
               </p>
             </div>
             <div className="flex items-center justify-between py-2">
               <div>
-                <Label>Analytics & Improvement</Label>
+                <Label>{t("analyticsImprovement")}</Label>
                 <p className="text-xs text-muted-foreground">
-                  Help improve LunaMed with anonymous usage data
+                  {t("analyticsDesc")}
                 </p>
               </div>
               <Switch
@@ -242,14 +241,14 @@ export const SettingsModal = ({ open, onOpenChange, profile, settings, onSave }:
             onClick={() => onOpenChange(false)}
             className="flex-1 rounded-xl border-border/50"
           >
-            Cancel
+            {t("cancel")}
           </Button>
           <Button
             onClick={handleSave}
             disabled={isLoading}
             className="flex-1 rounded-xl bg-gradient-to-r from-primary to-secondary"
           >
-            {isLoading ? "Saving..." : "Save Changes"}
+            {isLoading ? "Saving..." : t("save")}
           </Button>
         </div>
       </DialogContent>

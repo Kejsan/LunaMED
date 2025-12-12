@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight, FileText, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isToday, differenceInDays, addMonths, subMonths, isSameDay } from "date-fns";
@@ -22,6 +23,7 @@ interface DailyLog {
 const Calendar = () => {
   const { user } = useAuth();
   const { isCelestial } = useTheme();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const isDark = isCelestial;
 
@@ -30,7 +32,7 @@ const Calendar = () => {
   const [logs, setLogs] = useState<DailyLog[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [cycleDay, setCycleDay] = useState(1);
-  const [currentPhase, setCurrentPhase] = useState("Follicular");
+  const [currentPhase, setCurrentPhase] = useState("follicular");
   const [daysUntilPeriod, setDaysUntilPeriod] = useState(14);
 
   useEffect(() => {
@@ -68,10 +70,20 @@ const Calendar = () => {
       setCycleDay(Math.max(1, day));
       setDaysUntilPeriod(Math.max(0, cycleLength - day));
       
-      if (day <= periodLength) setCurrentPhase("Menstrual");
-      else if (day <= 13) setCurrentPhase("Follicular");
-      else if (day <= 16) setCurrentPhase("Ovulation");
-      else setCurrentPhase("Luteal");
+      if (day <= periodLength) setCurrentPhase("menstrual");
+      else if (day <= 13) setCurrentPhase("follicular");
+      else if (day <= 16) setCurrentPhase("ovulation");
+      else setCurrentPhase("luteal");
+    }
+  };
+
+  const getPhaseLabel = (phase: string) => {
+    switch (phase) {
+      case "menstrual": return t("menstrual");
+      case "follicular": return t("follicular");
+      case "ovulation": return t("ovulation");
+      case "luteal": return t("luteal");
+      default: return phase;
     }
   };
 
@@ -137,13 +149,13 @@ const Calendar = () => {
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold">Master Calendar</h1>
-            <p className="text-muted-foreground">Track your cycle phases and predictions</p>
+            <h1 className="text-3xl font-bold">{t("masterCalendar")}</h1>
+            <p className="text-muted-foreground">{t("trackCyclePhases")}</p>
           </div>
           <Button variant="outline" className="gap-2" asChild>
             <Link to="/reports">
               <FileText className="w-4 h-4" />
-              Export PDF Report
+              {t("exportPdfReport")}
             </Link>
           </Button>
         </div>
@@ -152,37 +164,37 @@ const Calendar = () => {
           {/* Sidebar Stats */}
           <div className="space-y-4">
             <div className={`p-4 rounded-xl ${isDark ? 'glass-dark' : 'glass-light'}`}>
-              <p className="text-sm text-muted-foreground mb-1">Current Phase</p>
-              <p className="text-xl font-bold">{currentPhase} Phase</p>
+              <p className="text-sm text-muted-foreground mb-1">{t("currentPhase")}</p>
+              <p className="text-xl font-bold">{getPhaseLabel(currentPhase)} Phase</p>
             </div>
             <div className={`p-4 rounded-xl ${isDark ? 'glass-dark' : 'glass-light'}`}>
-              <p className="text-sm text-muted-foreground mb-1">Cycle Day</p>
+              <p className="text-sm text-muted-foreground mb-1">{t("cycleDay")}</p>
               <p className="text-4xl font-bold">{cycleDay}</p>
             </div>
             <div className={`p-4 rounded-xl ${isDark ? 'glass-dark' : 'glass-light'}`}>
-              <p className="text-sm text-muted-foreground mb-1">Next Period</p>
-              <p className="text-xl font-bold">{daysUntilPeriod} Days</p>
+              <p className="text-sm text-muted-foreground mb-1">{t("nextPeriod")}</p>
+              <p className="text-xl font-bold">{daysUntilPeriod} {t("days")}</p>
             </div>
 
             {/* Legend */}
             <div className={`p-4 rounded-xl ${isDark ? 'glass-dark' : 'glass-light'}`}>
-              <p className="text-sm font-medium mb-3">Visual Key</p>
+              <p className="text-sm font-medium mb-3">{t("visualKey")}</p>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 rounded bg-red-500" />
-                  <span>Menstruation</span>
+                  <span>{t("menstruation")}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 rounded bg-green-500" />
-                  <span>Fertile Window</span>
+                  <span>{t("fertileWindow")}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 rounded bg-yellow-500" />
-                  <span>Ovulation Day</span>
+                  <span>{t("ovulationDay")}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 rounded border-2 border-dashed border-red-500" />
-                  <span>Prediction</span>
+                  <span>{t("prediction")}</span>
                 </div>
               </div>
             </div>
@@ -193,7 +205,7 @@ const Calendar = () => {
                 <div className="flex items-start gap-2">
                   <Info className="w-4 h-4 text-primary mt-0.5" />
                   <p className="text-sm text-muted-foreground">
-                    The waxing gibbous moon phase often correlates with rising energy levels and creativity.
+                    {t("moonTip")}
                   </p>
                 </div>
               </div>
