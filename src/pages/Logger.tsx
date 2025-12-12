@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { AppLayout } from "@/components/layout/AppLayout";
@@ -16,6 +17,7 @@ type MoodType = "happy" | "calm" | "anxious" | "sad" | "irritable" | "energetic"
 const Logger = () => {
   const { user } = useAuth();
   const { isCelestial } = useTheme();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const { toast } = useToast();
   const isDark = isCelestial;
@@ -140,40 +142,48 @@ const Logger = () => {
 
     if (error) {
       toast({
-        title: "Error",
-        description: "Failed to save log. Please try again.",
+        title: t("error"),
+        description: t("logError"),
         variant: "destructive",
       });
     } else {
       toast({
-        title: "Log saved!",
-        description: "Your daily log has been recorded.",
+        title: t("logSaved"),
+        description: t("logSavedDesc"),
       });
       navigate("/insight");
     }
   };
 
-  const flowOptions: { value: FlowIntensity; label: string }[] = [
-    { value: "none", label: "None" },
-    { value: "light", label: "Light" },
-    { value: "medium", label: "Med" },
-    { value: "heavy", label: "Heavy" },
+  const flowOptions: { value: FlowIntensity; labelKey: "none" | "light" | "medium" | "heavy" }[] = [
+    { value: "none", labelKey: "none" },
+    { value: "light", labelKey: "light" },
+    { value: "medium", labelKey: "medium" },
+    { value: "heavy", labelKey: "heavy" },
   ];
 
-  const moodOptions: { value: MoodType; emoji: string; label: string }[] = [
-    { value: "happy", emoji: "😊", label: "Happy" },
-    { value: "calm", emoji: "😌", label: "Calm" },
-    { value: "energetic", emoji: "⚡", label: "Energetic" },
-    { value: "neutral", emoji: "😐", label: "Neutral" },
-    { value: "tired", emoji: "😴", label: "Tired" },
-    { value: "anxious", emoji: "😰", label: "Anxious" },
-    { value: "sad", emoji: "😢", label: "Sad" },
-    { value: "irritable", emoji: "😤", label: "Irritable" },
+  const moodOptions: { value: MoodType; emoji: string; labelKey: "happy" | "calm" | "energetic" | "neutral" | "tired" | "anxious" | "sad" | "irritable" }[] = [
+    { value: "happy", emoji: "😊", labelKey: "happy" },
+    { value: "calm", emoji: "😌", labelKey: "calm" },
+    { value: "energetic", emoji: "⚡", labelKey: "energetic" },
+    { value: "neutral", emoji: "😐", labelKey: "neutral" },
+    { value: "tired", emoji: "😴", labelKey: "tired" },
+    { value: "anxious", emoji: "😰", labelKey: "anxious" },
+    { value: "sad", emoji: "😢", labelKey: "sad" },
+    { value: "irritable", emoji: "😤", labelKey: "irritable" },
   ];
 
-  const symptomOptions = [
-    "Cramps", "Headache", "Bloating", "Fatigue", "Breast tenderness",
-    "Acne", "Back pain", "Nausea", "Insomnia", "Cravings",
+  const symptomOptions: { value: string; labelKey: "cramps" | "headache" | "bloating" | "fatigue" | "breastTenderness" | "acne" | "backPain" | "nausea" | "insomnia" | "cravings" }[] = [
+    { value: "Cramps", labelKey: "cramps" },
+    { value: "Headache", labelKey: "headache" },
+    { value: "Bloating", labelKey: "bloating" },
+    { value: "Fatigue", labelKey: "fatigue" },
+    { value: "Breast tenderness", labelKey: "breastTenderness" },
+    { value: "Acne", labelKey: "acne" },
+    { value: "Back pain", labelKey: "backPain" },
+    { value: "Nausea", labelKey: "nausea" },
+    { value: "Insomnia", labelKey: "insomnia" },
+    { value: "Cravings", labelKey: "cravings" },
   ];
 
   const toggleMood = (mood: MoodType) => {
@@ -209,8 +219,8 @@ const Logger = () => {
             <ChevronLeft className="w-5 h-5" />
           </Button>
           <div className="text-center">
-            <p className="font-semibold">{isToday ? "TODAY" : format(currentDate, "MMM d")}</p>
-            <p className="text-sm text-muted-foreground">Cycle Day {cycleDay}</p>
+            <p className="font-semibold">{isToday ? t("today") : format(currentDate, "MMM d")}</p>
+            <p className="text-sm text-muted-foreground">{t("cycleDay")} {cycleDay}</p>
           </div>
           <Button
             variant="ghost"
@@ -227,22 +237,22 @@ const Logger = () => {
           <div className="flex items-center justify-center gap-8 mb-4">
             <div className="text-center">
               <div className="text-3xl mb-1">🩸</div>
-              <p className="text-xs text-muted-foreground">Period</p>
+              <p className="text-xs text-muted-foreground">{t("period")}</p>
             </div>
             <div className="h-px flex-1 bg-gradient-to-r from-red-500 via-yellow-500 to-purple-500" />
             <div className="text-center">
               <div className="text-3xl mb-1">✨</div>
-              <p className="text-xs text-muted-foreground">Ovulation</p>
+              <p className="text-xs text-muted-foreground">{t("ovulation")}</p>
             </div>
             <div className="h-px flex-1 bg-gradient-to-r from-yellow-500 to-purple-500" />
             <div className="text-center">
               <div className="text-3xl mb-1">🌙</div>
-              <p className="text-xs text-muted-foreground">Period</p>
+              <p className="text-xs text-muted-foreground">{t("period")}</p>
             </div>
           </div>
           {isDark && (
             <p className="text-sm text-muted-foreground italic">
-              ♓ Energy is rising. A powerful time for manifestation and creative projects.
+              ♓ {t("celestialInsight")}
             </p>
           )}
         </div>
@@ -250,21 +260,21 @@ const Logger = () => {
         {/* Tabs */}
         <div className="flex gap-2">
           {[
-            { id: "flow", label: "Flow", emoji: "🩸" },
-            { id: "physical", label: "Physical", emoji: "💪" },
-            { id: "mood", label: "Mood", emoji: "😊" },
-          ].map((t) => (
+            { id: "flow", labelKey: "flow" as const, emoji: "🩸" },
+            { id: "physical", labelKey: "physical" as const, emoji: "💪" },
+            { id: "mood", labelKey: "mood" as const, emoji: "😊" },
+          ].map((tabItem) => (
             <button
-              key={t.id}
-              onClick={() => setTab(t.id as any)}
+              key={tabItem.id}
+              onClick={() => setTab(tabItem.id as any)}
               className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all ${
-                tab === t.id
+                tab === tabItem.id
                   ? 'bg-primary text-primary-foreground'
                   : isDark ? 'glass-dark' : 'glass-light'
               }`}
             >
-              <span className="mr-2">{t.emoji}</span>
-              {t.label}
+              <span className="mr-2">{tabItem.emoji}</span>
+              {t(tabItem.labelKey)}
             </button>
           ))}
         </div>
@@ -274,8 +284,8 @@ const Logger = () => {
           {tab === "flow" && (
             <div className="space-y-6">
               <div>
-                <h3 className="font-semibold mb-4">Menstrual Flow</h3>
-                <div className="grid grid-cols-5 gap-2">
+                <h3 className="font-semibold mb-4">{t("menstrualFlow")}</h3>
+                <div className="grid grid-cols-4 gap-2">
                   {flowOptions.map((opt) => (
                     <button
                       key={opt.value}
@@ -289,26 +299,26 @@ const Logger = () => {
                       <div className="text-2xl mb-1">
                         {opt.value === "none" ? "○" : opt.value === "light" ? "◔" : opt.value === "medium" ? "◑" : "●"}
                       </div>
-                      <p className="text-xs">{opt.label}</p>
+                      <p className="text-xs">{t(opt.labelKey)}</p>
                     </button>
                   ))}
                 </div>
               </div>
 
               <div>
-                <h3 className="font-semibold mb-4">Symptoms</h3>
+                <h3 className="font-semibold mb-4">{t("symptoms")}</h3>
                 <div className="flex flex-wrap gap-2">
                   {symptomOptions.map((symptom) => (
                     <button
-                      key={symptom}
-                      onClick={() => toggleSymptom(symptom)}
+                      key={symptom.value}
+                      onClick={() => toggleSymptom(symptom.value)}
                       className={`px-4 py-2 rounded-full text-sm transition-all ${
-                        logData.symptoms.includes(symptom)
+                        logData.symptoms.includes(symptom.value)
                           ? 'bg-primary text-primary-foreground'
                           : 'bg-muted/50 hover:bg-muted'
                       }`}
                     >
-                      {symptom}
+                      {t(symptom.labelKey)}
                     </button>
                   ))}
                 </div>
@@ -320,7 +330,7 @@ const Logger = () => {
             <div className="space-y-6">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm font-medium mb-2 block">Temperature (°F)</label>
+                  <label className="text-sm font-medium mb-2 block">{t("temperature")} (°F)</label>
                   <input
                     type="number"
                     step="0.1"
@@ -331,7 +341,7 @@ const Logger = () => {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium mb-2 block">Weight (lbs)</label>
+                  <label className="text-sm font-medium mb-2 block">{t("weight")} (lbs)</label>
                   <input
                     type="number"
                     step="0.1"
@@ -342,7 +352,7 @@ const Logger = () => {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium mb-2 block">Sleep (hours)</label>
+                  <label className="text-sm font-medium mb-2 block">{t("sleepHours")}</label>
                   <input
                     type="number"
                     step="0.5"
@@ -353,7 +363,7 @@ const Logger = () => {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium mb-2 block">Exercise (min)</label>
+                  <label className="text-sm font-medium mb-2 block">{t("exerciseMinutes")}</label>
                   <input
                     type="number"
                     placeholder="30"
@@ -368,7 +378,7 @@ const Logger = () => {
 
           {tab === "mood" && (
             <div>
-              <h3 className="font-semibold mb-4">How are you feeling?</h3>
+              <h3 className="font-semibold mb-4">{t("howAreYouFeeling")}</h3>
               <div className="grid grid-cols-4 gap-3">
                 {moodOptions.map((mood) => (
                   <button
@@ -381,7 +391,7 @@ const Logger = () => {
                     }`}
                   >
                     <div className="text-2xl mb-1">{mood.emoji}</div>
-                    <p className="text-xs">{mood.label}</p>
+                    <p className="text-xs">{t(mood.labelKey)}</p>
                   </button>
                 ))}
               </div>
@@ -391,9 +401,9 @@ const Logger = () => {
 
         {/* Notes */}
         <div className={`p-6 rounded-2xl ${isDark ? 'glass-dark' : 'glass-light'}`}>
-          <label className="text-sm font-medium mb-2 block">Private Notes</label>
+          <label className="text-sm font-medium mb-2 block">{t("privateNotes")}</label>
           <Textarea
-            placeholder="Add a private note..."
+            placeholder={t("addPrivateNote")}
             value={logData.notes}
             onChange={(e) => setLogData({ ...logData, notes: e.target.value })}
             className="bg-muted/50 border-0 resize-none"
@@ -403,7 +413,7 @@ const Logger = () => {
 
         {/* Save Button */}
         <Button onClick={handleSave} disabled={loading} className="w-full gap-2" size="lg">
-          {loading ? "Saving..." : "Save Log"}
+          {loading ? t("saving") : t("saveLog")}
           <Check className="w-4 h-4" />
         </Button>
       </div>

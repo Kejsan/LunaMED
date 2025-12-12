@@ -164,6 +164,7 @@ export type Database = {
           data_sharing_consent: boolean | null
           gdpr_consent_date: string | null
           id: string
+          language_preference: string | null
           notifications_enabled: boolean | null
           ovulation_reminder: boolean | null
           period_reminder_days: number | null
@@ -175,6 +176,7 @@ export type Database = {
           data_sharing_consent?: boolean | null
           gdpr_consent_date?: string | null
           id?: string
+          language_preference?: string | null
           notifications_enabled?: boolean | null
           ovulation_reminder?: boolean | null
           period_reminder_days?: number | null
@@ -186,6 +188,7 @@ export type Database = {
           data_sharing_consent?: boolean | null
           gdpr_consent_date?: string | null
           id?: string
+          language_preference?: string | null
           notifications_enabled?: boolean | null
           ovulation_reminder?: boolean | null
           period_reminder_days?: number | null

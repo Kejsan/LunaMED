@@ -4,6 +4,7 @@ import { Download, FileText, Calendar, Activity, Droplets } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { AppLayout } from "@/components/layout/AppLayout";
@@ -30,6 +31,7 @@ interface DailyLog {
 const Reports = () => {
   const { user } = useAuth();
   const { isCelestial } = useTheme();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const { toast } = useToast();
   const isDark = isCelestial;
@@ -97,7 +99,7 @@ const Reports = () => {
     
     // Create report data
     const reportData = {
-      patient: profile?.display_name || "Patient",
+      patient: profile?.display_name || t("patient"),
       generatedOn: format(new Date(), "MM/dd/yyyy"),
       reportId: `#${Math.random().toString(36).substr(2, 4).toUpperCase()}-LUNA`,
       avgCycleLength,
@@ -121,8 +123,8 @@ const Reports = () => {
 
     setGenerating(false);
     toast({
-      title: "Report Generated",
-      description: "Your health report has been downloaded.",
+      title: t("reportGenerated"),
+      description: t("reportDownloaded"),
     });
   };
 
@@ -130,7 +132,7 @@ const Reports = () => {
     return (
       <AppLayout>
         <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="animate-pulse text-muted-foreground">Preparing report...</div>
+          <div className="animate-pulse text-muted-foreground">{t("preparingReport")}</div>
         </div>
       </AppLayout>
     );
@@ -142,12 +144,12 @@ const Reports = () => {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold">Medical Report Builder</h1>
-            <p className="text-muted-foreground">Generate reports for your healthcare provider</p>
+            <h1 className="text-3xl font-bold">{t("medicalReportBuilder")}</h1>
+            <p className="text-muted-foreground">{t("generateReportsForProvider")}</p>
           </div>
           <Button onClick={handleExport} disabled={generating} className="gap-2">
             <Download className="w-4 h-4" />
-            {generating ? "Generating..." : "Export Report"}
+            {generating ? t("generatingReport") : t("exportReport")}
           </Button>
         </div>
 
@@ -161,18 +163,18 @@ const Reports = () => {
               </div>
               <div>
                 <h2 className="text-xl font-bold">LunaMed</h2>
-                <p className="text-sm text-muted-foreground">Gynecological Health Summary</p>
+                <p className="text-sm text-muted-foreground">{t("gynecologicalHealthSummary")}</p>
               </div>
             </div>
             <div className="text-right">
-              <p className="text-sm text-muted-foreground">Patient</p>
-              <p className="font-semibold">{profile?.display_name || "Patient"}</p>
+              <p className="text-sm text-muted-foreground">{t("patient")}</p>
+              <p className="font-semibold">{profile?.display_name || t("patient")}</p>
             </div>
           </div>
 
           {/* Report Metadata */}
           <div className="flex items-center gap-4 text-sm text-muted-foreground mb-8">
-            <span>Generated on {format(new Date(), "MM/dd/yyyy")}</span>
+            <span>{t("generatedOn")} {format(new Date(), "MM/dd/yyyy")}</span>
             <span>•</span>
             <span>ID: #{Math.random().toString(36).substr(2, 4).toUpperCase()}-LUNA</span>
           </div>
@@ -181,25 +183,25 @@ const Reports = () => {
           <div className="grid grid-cols-4 gap-4 mb-8">
             <MetricCard
               icon={<Calendar className="w-5 h-5" />}
-              label="Avg Cycle Length"
-              value={`${avgCycleLength} Days`}
+              label={t("avgCycleLength")}
+              value={`${avgCycleLength} ${t("days")}`}
               isDark={isDark}
             />
             <MetricCard
               icon={<Droplets className="w-5 h-5" />}
-              label="Period Duration"
-              value={`${avgPeriodLength} Days`}
+              label={t("periodDuration")}
+              value={`${avgPeriodLength} ${t("days")}`}
               isDark={isDark}
             />
             <MetricCard
               icon={<Activity className="w-5 h-5" />}
-              label="Regularity"
+              label={t("regularity")}
               value={`${regularity}%`}
               isDark={isDark}
             />
             <MetricCard
               icon={<FileText className="w-5 h-5" />}
-              label="Cycles Tracked"
+              label={t("cyclesTracked")}
               value={`${cycles.length}`}
               isDark={isDark}
             />
@@ -207,7 +209,7 @@ const Reports = () => {
 
           {/* Last 3 Cycles */}
           <div className="mb-8">
-            <h3 className="font-semibold mb-4">Last 3 Cycles</h3>
+            <h3 className="font-semibold mb-4">{t("last3Cycles")}</h3>
             <div className={`p-4 rounded-xl ${isDark ? 'bg-muted/30' : 'bg-muted/50'}`}>
               <div className="flex items-center gap-4">
                 <div className="flex-1 h-2 rounded-full bg-muted overflow-hidden">
@@ -220,9 +222,9 @@ const Reports = () => {
                 </div>
               </div>
               <div className="flex justify-between text-xs text-muted-foreground mt-2">
-                <span>Day 1</span>
-                <span>Day 14 (Ovulation)</span>
-                <span>Day 28</span>
+                <span>{t("day")} 1</span>
+                <span>{t("day")} 14 ({t("ovulation")})</span>
+                <span>{t("day")} 28</span>
               </div>
             </div>
             
@@ -231,9 +233,9 @@ const Reports = () => {
                 {cycles.slice(0, 3).map((cycle, i) => (
                   <div key={i} className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground">
-                      Cycle {i + 1}: {format(new Date(cycle.start_date), "MMM d, yyyy")}
+                      {t("cycle")} {i + 1}: {format(new Date(cycle.start_date), "MMM d, yyyy")}
                     </span>
-                    <span>{cycle.cycle_length || 28} days</span>
+                    <span>{cycle.cycle_length || 28} {t("days")}</span>
                   </div>
                 ))}
               </div>
@@ -242,7 +244,7 @@ const Reports = () => {
 
           {/* Reported Symptoms */}
           <div>
-            <h3 className="font-semibold mb-4">Reported Symptoms</h3>
+            <h3 className="font-semibold mb-4">{t("reportedSymptoms")}</h3>
             {symptoms.length > 0 ? (
               <div className="space-y-2">
                 {symptoms.slice(0, 5).map((item, i) => (
@@ -253,34 +255,33 @@ const Reports = () => {
                 ))}
               </div>
             ) : (
-              <p className="text-muted-foreground text-sm">No symptoms logged in the last 3 months.</p>
+              <p className="text-muted-foreground text-sm">{t("noSymptomsLogged")}</p>
             )}
           </div>
 
           {/* Footer Note */}
           <div className="mt-8 pt-6 border-t border-border">
             <p className="text-xs text-muted-foreground text-center">
-              This report is generated by LunaMed for informational purposes. 
-              Please consult with your healthcare provider for medical advice.
+              {t("reportDisclaimer")}
             </p>
           </div>
         </div>
 
         {/* Export Options */}
         <div className={`p-6 rounded-2xl ${isDark ? 'glass-dark' : 'glass-light'}`}>
-          <h3 className="font-semibold mb-4">Export Options</h3>
+          <h3 className="font-semibold mb-4">{t("exportOptions")}</h3>
           <div className="grid md:grid-cols-3 gap-4">
             <Button variant="outline" className="justify-start gap-2" onClick={handleExport}>
               <FileText className="w-4 h-4" />
-              Full Report (JSON)
+              {t("fullReportJson")}
             </Button>
             <Button variant="outline" className="justify-start gap-2" disabled>
               <Calendar className="w-4 h-4" />
-              Calendar Export (Coming Soon)
+              {t("calendarExport")}
             </Button>
             <Button variant="outline" className="justify-start gap-2" disabled>
               <Activity className="w-4 h-4" />
-              Raw Data (Coming Soon)
+              {t("rawData")}
             </Button>
           </div>
         </div>

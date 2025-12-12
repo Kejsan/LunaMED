@@ -4,6 +4,7 @@ import { FileText, TrendingUp, AlertTriangle, Moon, Activity, ChevronRight } fro
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { format, differenceInDays, subMonths } from "date-fns";
@@ -23,6 +24,7 @@ interface DailyLog {
 const Analytics = () => {
   const { user } = useAuth();
   const { isCelestial } = useTheme();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const isDark = isCelestial;
 
@@ -73,10 +75,10 @@ const Analytics = () => {
     : 14;
 
   const getPhase = () => {
-    if (cycleDay <= 5) return { name: "Menstrual", emoji: "🩸" };
-    if (cycleDay <= 13) return { name: "Follicular", emoji: "🌱" };
-    if (cycleDay <= 16) return { name: "Ovulation", emoji: "✨" };
-    return { name: "Luteal", emoji: "🌙" };
+    if (cycleDay <= 5) return { name: t("menstrual"), emoji: "🩸" };
+    if (cycleDay <= 13) return { name: t("follicular"), emoji: "🌱" };
+    if (cycleDay <= 16) return { name: t("ovulation"), emoji: "✨" };
+    return { name: t("luteal"), emoji: "🌙" };
   };
   const phase = getPhase();
 
@@ -99,8 +101,8 @@ const Analytics = () => {
     .slice(0, 3)
     .map(([symptom, days]) => {
       const avgDay = Math.round(days.reduce((a, b) => a + b, 0) / days.length);
-      const phase = avgDay <= 5 ? "Menstrual" : avgDay <= 13 ? "Follicular" : avgDay <= 16 ? "Ovulation" : "Luteal";
-      return { symptom, count: days.length, phase };
+      const phaseName = avgDay <= 5 ? t("menstrual") : avgDay <= 13 ? t("follicular") : avgDay <= 16 ? t("ovulation") : t("luteal");
+      return { symptom, count: days.length, phase: phaseName };
     });
 
   // Mood distribution
@@ -126,7 +128,7 @@ const Analytics = () => {
     return (
       <AppLayout>
         <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="animate-pulse text-muted-foreground">Loading analytics...</div>
+          <div className="animate-pulse text-muted-foreground">{t("loading")}</div>
         </div>
       </AppLayout>
     );
@@ -138,13 +140,13 @@ const Analytics = () => {
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold">Cycle Analytics</h1>
-            <p className="text-muted-foreground">Deep dive into your biometric data and rhythmic patterns.</p>
+            <h1 className="text-3xl font-bold">{t("cycleAnalytics")}</h1>
+            <p className="text-muted-foreground">{t("deepDiveAnalytics")}</p>
           </div>
           <Button className="gap-2" asChild>
             <Link to="/reports">
               <FileText className="w-4 h-4" />
-              Export Report
+              {t("exportReport")}
             </Link>
           </Button>
         </div>
@@ -152,28 +154,29 @@ const Analytics = () => {
         {/* Quick Stats */}
         <div className="grid md:grid-cols-4 gap-4">
           <StatCard
-            label="Current Phase"
-            value={`Day ${cycleDay}`}
+            label={t("currentPhase")}
+            value={`${t("day")} ${cycleDay}`}
             sublabel={`${phase.emoji} ${phase.name}`}
             isDark={isDark}
             live
+            liveLabel={t("live")}
           />
           <StatCard
-            label="Next Period"
-            value={`${Math.max(0, avgCycleLength - cycleDay)} Days`}
-            sublabel="Predicted"
+            label={t("nextPeriod")}
+            value={`${Math.max(0, avgCycleLength - cycleDay)} ${t("days")}`}
+            sublabel={t("predicted")}
             isDark={isDark}
           />
           <StatCard
-            label="Avg Cycle"
-            value={`${avgCycleLength} Days`}
-            sublabel={`Based on ${cycles.length} cycles`}
+            label={t("avgCycle")}
+            value={`${avgCycleLength} ${t("days")}`}
+            sublabel={t("basedOnCycles").replace("{count}", cycles.length.toString())}
             isDark={isDark}
           />
           <StatCard
-            label="Variation"
-            value={`${cycleVariation} Days`}
-            sublabel={hasIrregularity ? "Irregularity detected" : "Within normal range"}
+            label={t("variation")}
+            value={`${cycleVariation} ${t("days")}`}
+            sublabel={hasIrregularity ? t("irregularityDetected") : t("withinNormalRange")}
             isDark={isDark}
             warning={hasIrregularity}
           />
@@ -184,10 +187,9 @@ const Analytics = () => {
           <div className={`p-4 rounded-xl flex items-start gap-3 ${isDark ? 'bg-yellow-500/20' : 'bg-yellow-50'}`}>
             <AlertTriangle className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
             <div>
-              <p className="font-medium">Irregularity Detected</p>
+              <p className="font-medium">{t("irregularityWarning")}</p>
               <p className="text-sm text-muted-foreground">
-                Your cycle variation is greater than 4 days. This deviates from your established baseline. 
-                Consider discussing with your healthcare provider.
+                {t("irregularityDesc")}
               </p>
             </div>
           </div>
@@ -199,13 +201,12 @@ const Analytics = () => {
             <div className="flex items-center gap-3 mb-4">
               <Moon className="w-6 h-6 text-primary" />
               <div>
-                <h3 className="font-semibold">Full Moon Sync</h3>
-                <p className="text-sm text-muted-foreground">88% alignment detected</p>
+                <h3 className="font-semibold">{t("fullMoonSync")}</h3>
+                <p className="text-sm text-muted-foreground">{t("alignmentDetected")}</p>
               </div>
             </div>
             <p className="text-muted-foreground text-sm">
-              "Your cycle is syncing with the lunar synodic month. This is traditionally considered a time of 
-              heightened spiritual awareness."
+              "{t("fullMoonSyncDesc")}"
             </p>
           </div>
         )}
@@ -215,7 +216,7 @@ const Analytics = () => {
           {/* Cycle Length History */}
           <div className={`p-6 rounded-2xl ${isDark ? 'glass-dark' : 'glass-light'}`}>
             <div className="flex items-center justify-between mb-6">
-              <h3 className="font-semibold">Cycle Length History</h3>
+              <h3 className="font-semibold">{t("cycleLengthHistory")}</h3>
               <div className="flex gap-2">
                 {(["3M", "6M", "1Y"] as const).map((range) => (
                   <button
@@ -254,7 +255,7 @@ const Analytics = () => {
               </ResponsiveContainer>
             ) : (
               <div className="h-[200px] flex items-center justify-center text-muted-foreground">
-                Not enough data yet. Keep logging!
+                {t("notEnoughData")}
               </div>
             )}
           </div>
@@ -262,8 +263,8 @@ const Analytics = () => {
           {/* Symptom Correlations */}
           <div className={`p-6 rounded-2xl ${isDark ? 'glass-dark' : 'glass-light'}`}>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold">Top Correlations</h3>
-              <Link to="/logger" className="text-sm text-primary hover:underline">View all →</Link>
+              <h3 className="font-semibold">{t("topCorrelations")}</h3>
+              <Link to="/logger" className="text-sm text-primary hover:underline">{t("viewAll")}</Link>
             </div>
             
             {topCorrelations.length > 0 ? (
@@ -272,17 +273,17 @@ const Analytics = () => {
                   <div key={item.symptom} className="flex items-center justify-between p-3 rounded-xl bg-muted/30">
                     <div>
                       <p className="font-medium">{item.symptom}</p>
-                      <p className="text-sm text-muted-foreground">Occurs most: {item.phase} Phase</p>
+                      <p className="text-sm text-muted-foreground">{t("occursMost").replace("{phase}", item.phase)}</p>
                     </div>
                     <span className="text-xs px-2 py-1 rounded-full bg-primary/20 text-primary">
-                      {item.count}x logged
+                      {item.count}x {t("logged")}
                     </span>
                   </div>
                 ))}
               </div>
             ) : (
               <div className="h-[150px] flex items-center justify-center text-muted-foreground">
-                Start logging symptoms to see correlations
+                {t("startLoggingSymptoms")}
               </div>
             )}
           </div>
@@ -290,7 +291,7 @@ const Analytics = () => {
 
         {/* Emotional Trends */}
         <div className={`p-6 rounded-2xl ${isDark ? 'glass-dark' : 'glass-light'}`}>
-          <h3 className="font-semibold mb-4">Emotional Trends</h3>
+          <h3 className="font-semibold mb-4">{t("emotionalTrends")}</h3>
           {topMoods.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {topMoods.map(([mood, count]) => (
@@ -299,13 +300,13 @@ const Analytics = () => {
                     {mood === "happy" ? "😊" : mood === "calm" ? "😌" : mood === "anxious" ? "😰" : mood === "sad" ? "😢" : mood === "tired" ? "😴" : mood === "energetic" ? "⚡" : mood === "irritable" ? "😤" : "😐"}
                   </div>
                   <p className="font-medium capitalize">{mood}</p>
-                  <p className="text-sm text-muted-foreground">{count} days</p>
+                  <p className="text-sm text-muted-foreground">{count} {t("days")}</p>
                 </div>
               ))}
             </div>
           ) : (
             <div className="h-[100px] flex items-center justify-center text-muted-foreground">
-              Start logging moods to see trends
+              {t("startLoggingMoods")}
             </div>
           )}
         </div>
@@ -320,15 +321,16 @@ interface StatCardProps {
   sublabel: string;
   isDark: boolean;
   live?: boolean;
+  liveLabel?: string;
   warning?: boolean;
 }
 
-const StatCard = ({ label, value, sublabel, isDark, live, warning }: StatCardProps) => (
+const StatCard = ({ label, value, sublabel, isDark, live, liveLabel, warning }: StatCardProps) => (
   <div className={`p-4 rounded-xl ${isDark ? 'glass-dark' : 'glass-light'}`}>
     <div className="flex items-center gap-2 mb-2">
       <p className="text-sm text-muted-foreground">{label}</p>
       {live && (
-        <span className="px-2 py-0.5 rounded-full bg-green-500/20 text-green-500 text-xs">LIVE</span>
+        <span className="px-2 py-0.5 rounded-full bg-green-500/20 text-green-500 text-xs">{liveLabel || "LIVE"}</span>
       )}
       {warning && (
         <AlertTriangle className="w-4 h-4 text-yellow-500" />
