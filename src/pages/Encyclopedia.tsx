@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Search, BookOpen, Heart, Shield, UtensilsCrossed, ChevronRight, Star } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -15,6 +16,7 @@ interface Article {
 }
 
 const Encyclopedia = () => {
+  const navigate = useNavigate();
   const { isCelestial } = useTheme();
   const { t } = useLanguage();
   const isDark = isCelestial;
@@ -185,7 +187,10 @@ const Encyclopedia = () => {
             </div>
             <h2 className="text-2xl font-bold mb-2">{t(featuredArticle.titleKey as any)}</h2>
             <p className="text-muted-foreground mb-4">{t(featuredArticle.descriptionKey as any)}</p>
-            <button className="text-primary font-medium flex items-center gap-1 hover:underline">
+            <button 
+              onClick={() => navigate("/article")}
+              className="text-primary font-medium flex items-center gap-1 hover:underline"
+            >
               {t("readArticle")} <ChevronRight className="w-4 h-4" />
             </button>
           </div>
@@ -194,7 +199,7 @@ const Encyclopedia = () => {
         {/* Articles Grid */}
         <div className="grid md:grid-cols-2 gap-6">
           {filteredArticles.map((article) => (
-            <ArticleCard key={article.id} article={article} isDark={isDark} t={t} />
+            <ArticleCard key={article.id} article={article} isDark={isDark} t={t} onClick={() => navigate("/article")} />
           ))}
         </div>
 
@@ -247,9 +252,10 @@ interface ArticleCardProps {
   article: Article;
   isDark: boolean;
   t: (key: any) => string;
+  onClick: () => void;
 }
 
-const ArticleCard = ({ article, isDark, t }: ArticleCardProps) => {
+const ArticleCard = ({ article, isDark, t, onClick }: ArticleCardProps) => {
   const categoryColors: Record<string, string> = {
     biology: "bg-blue-500/20 text-blue-500",
     disorders: "bg-red-500/20 text-red-500",
@@ -268,7 +274,10 @@ const ArticleCard = ({ article, isDark, t }: ArticleCardProps) => {
   };
 
   return (
-    <div className={`p-6 rounded-2xl ${isDark ? 'glass-dark' : 'glass-light'} hover:scale-[1.02] transition-transform cursor-pointer`}>
+    <div 
+      onClick={onClick}
+      className={`p-6 rounded-2xl ${isDark ? 'glass-dark' : 'glass-light'} hover:scale-[1.02] transition-transform cursor-pointer`}
+    >
       <div className="flex items-center gap-2 mb-3">
         <span className={`px-2 py-1 rounded-full text-xs font-medium ${categoryColors[article.category] || 'bg-muted'}`}>
           {getCategoryLabel(article.category).toUpperCase()}

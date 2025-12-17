@@ -16,6 +16,8 @@ import Calendar from "./pages/Calendar";
 import Analytics from "./pages/Analytics";
 import Reports from "./pages/Reports";
 import Encyclopedia from "./pages/Encyclopedia";
+import Article from "./pages/Article";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +42,8 @@ const App = () => (
                 <Route path="/analytics" element={<Analytics />} />
                 <Route path="/reports" element={<Reports />} />
                 <Route path="/encyclopedia" element={<Encyclopedia />} />
+                <Route path="/article" element={<Article />} />
+                <Route path="/settings" element={<Settings />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </LanguageProvider>
