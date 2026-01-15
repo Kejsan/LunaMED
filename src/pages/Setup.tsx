@@ -30,24 +30,47 @@ const Setup = () => {
   const totalSteps = 3;
 
   const handleComplete = async () => {
-    if (!user) return;
+    if (!user) {
+      // User not authenticated - redirect to auth page with setup data in state
+      toast({
+        title: "Please sign in first",
+        description: "Create an account to save your settings.",
+      });
+      navigate("/auth", { 
+        state: { 
+          returnTo: "/setup",
+          setupData: { goal, cycleLength, periodLength, lastPeriodDate }
+        }
+      });
+      return;
+    }
     
     setLoading(true);
     try {
       // Update profile
-      await supabase.from("profiles").update({
+      const { error: profileError } = await supabase.from("profiles").update({
         default_cycle_length: cycleLength,
         default_period_length: periodLength,
       }).eq("id", user.id);
 
+      if (profileError) {
+        console.error("Profile update error:", profileError);
+        throw profileError;
+      }
+
       // Create initial cycle if last period date provided
       if (lastPeriodDate) {
-        await supabase.from("cycles").insert({
+        const { error: cycleError } = await supabase.from("cycles").insert({
           user_id: user.id,
           start_date: lastPeriodDate,
           cycle_length: cycleLength,
           period_length: periodLength,
         });
+
+        if (cycleError) {
+          console.error("Cycle insert error:", cycleError);
+          throw cycleError;
+        }
       }
 
       toast({
@@ -55,10 +78,11 @@ const Setup = () => {
         description: "Your cycle tracking is ready to go.",
       });
       navigate("/dashboard");
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Setup error:", error);
       toast({
         title: "Error",
-        description: "Failed to save settings. Please try again.",
+        description: error?.message || "Failed to save settings. Please try again.",
         variant: "destructive",
       });
     } finally {
