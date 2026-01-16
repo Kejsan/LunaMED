@@ -120,10 +120,63 @@ const Settings = () => {
     }
   };
 
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const handleDeleteAccount = async () => {
-    // In a real app, this would call a server function to delete the account
-    toast({ title: t("accountDeletionRequested"), description: t("accountDeletionDesc") });
-    setShowDeleteModal(false);
+    if (!user) return;
+    
+    setIsDeleting(true);
+    try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const token = sessionData?.session?.access_token;
+      
+      if (!token) {
+        toast({ 
+          title: t("error"), 
+          description: "Session expired. Please sign in again.",
+          variant: "destructive" 
+        });
+        navigate("/auth");
+        return;
+      }
+
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/delete-account`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to delete account');
+      }
+
+      // Sign out the user after successful deletion
+      await signOut();
+      
+      toast({ 
+        title: t("accountDeleted") || "Account Deleted", 
+        description: t("accountDeletedDesc") || "Your account and all data have been permanently deleted." 
+      });
+      
+      navigate("/");
+    } catch (error: any) {
+      console.error("Account deletion error:", error);
+      toast({ 
+        title: t("error"), 
+        description: error.message || "Failed to delete account. Please try again.",
+        variant: "destructive" 
+      });
+    } finally {
+      setIsDeleting(false);
+      setShowDeleteModal(false);
+    }
   };
 
   const handleUpdateSettings = async () => {
