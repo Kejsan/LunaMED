@@ -18,6 +18,7 @@ import Reports from "./pages/Reports";
 import Encyclopedia from "./pages/Encyclopedia";
 import Article from "./pages/Article";
 import Settings from "./pages/Settings";
+import Install from "./pages/Install";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +45,7 @@ const App = () => (
                 <Route path="/encyclopedia" element={<Encyclopedia />} />
                 <Route path="/article" element={<Article />} />
                 <Route path="/settings" element={<Settings />} />
+                <Route path="/install" element={<Install />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </LanguageProvider>
