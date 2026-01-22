@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
-import { componentTagger } from "lovable-tagger";
+
 import { VitePWA } from "vite-plugin-pwa";
 
 // https://vitejs.dev/config/
@@ -12,14 +12,20 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
-    mode === "development" && componentTagger(),
+
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["favicon.ico", "apple-touch-icon-180x180.png", "pwa-192x192.png", "pwa-512x512.png"],
+      includeAssets: [
+        "favicon.ico",
+        "apple-touch-icon-180x180.png",
+        "pwa-192x192.png",
+        "pwa-512x512.png",
+      ],
       manifest: {
         name: "LunaMed - Cycle Tracking",
         short_name: "LunaMed",
-        description: "Track your menstrual cycle with personalized insights and wellness recommendations",
+        description:
+          "Track your menstrual cycle with personalized insights and wellness recommendations",
         theme_color: "#0d9488",
         background_color: "#030712",
         display: "standalone",
