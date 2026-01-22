@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Bell, Lock, Scale, Trash2, Download, Shield, Eye, EyeOff } from "lucide-react";
+import { User, Bell, Lock, Scale, Trash2, Download, Shield, Eye, Smartphone } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "@/hooks/use-toast";
+import { PushNotificationToggle } from "@/components/PushNotificationToggle";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -345,6 +346,21 @@ const Settings = () => {
                   {/* Notifications Section */}
                   {activeTab === "notifications" && (
                     <div className="space-y-6 animate-in fade-in duration-300">
+                      {/* Push Notifications Card */}
+                      <div className={`rounded-3xl border backdrop-blur-md overflow-hidden ${isCelestial ? "bg-white/5 border-white/10" : "bg-card border-border shadow-sm"}`}>
+                        <div className={`p-8 border-b ${isCelestial ? "border-white/10" : "border-border"}`}>
+                          <div className="flex items-center gap-3 mb-2">
+                            <Smartphone className="w-5 h-5 opacity-70" />
+                            <h2 className="text-2xl font-bold">{t("pushNotifications") || "Push Notifications"}</h2>
+                          </div>
+                          <p className="text-sm opacity-60 mt-1">{t("pushNotificationsDesc") || "Receive reminders directly on your device"}</p>
+                        </div>
+                        <div className="p-6">
+                          <PushNotificationToggle showLabel={true} size="md" />
+                        </div>
+                      </div>
+
+                      {/* Orbital Alerts Card */}
                       <div className={`rounded-3xl border backdrop-blur-md overflow-hidden ${isCelestial ? "bg-white/5 border-white/10" : "bg-card border-border shadow-sm"}`}>
                         <div className={`p-8 border-b ${isCelestial ? "border-white/10" : "border-border"}`}>
                           <h2 className="text-2xl font-bold">{t("orbitalAlerts")}</h2>

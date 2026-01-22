@@ -78,7 +78,8 @@ export const translations = {
     analyticsImprovement: "Analytics & Improvement",
     analyticsDesc: "Help improve LunaMed with anonymous usage data",
     getNotifiedBeforePeriod: "Get notified before your period",
-    
+    pushNotifications: "Push Notifications",
+    pushNotificationsDesc: "Receive reminders directly on your device",
     // Navigation
     home: "Home",
     calendar: "Calendar",
@@ -428,7 +429,8 @@ export const translations = {
     analyticsImprovement: "Analitika & Përmirësimi",
     analyticsDesc: "Ndihmoni të përmirësojmë LunaMed me të dhëna anonime përdorimi",
     getNotifiedBeforePeriod: "Njoftohu para periudhës",
-    
+    pushNotifications: "Njoftimet Push",
+    pushNotificationsDesc: "Merrni kujtues direkt në pajisjen tuaj",
     // Navigation
     home: "Kryefaqja",
     calendar: "Kalendari",
