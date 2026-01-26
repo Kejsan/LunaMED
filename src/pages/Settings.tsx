@@ -693,6 +693,16 @@ const Settings = () => {
                               className="opacity-60"
                             />
                           </div>
+                          
+                          {/* Change Password Section */}
+                          <div className="pt-6 border-t border-border/50">
+                             <h3 className="text-sm font-semibold mb-4">{t("changePassword")}</h3>
+                             <Button onClick={() => navigate("/auth?reset=true")} variant="outline" className="w-full justify-between">
+                               <span>{t("requestResetEmail")}</span>
+                               <Lock className="w-4 h-4 ml-2" />
+                             </Button>
+                          </div>
+
                           <div className="pt-4">
                             <Button onClick={handleUpdateSettings}>
                               {t("updateCredentials")}

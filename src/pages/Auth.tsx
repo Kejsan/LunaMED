@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Moon, Mail, Lock, User, ArrowRight, Sparkles, Shield, ArrowLeft } from "lucide-react";
+import { Moon, Mail, Lock, User, ArrowRight, Sparkles, Shield, ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -30,6 +30,7 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [displayName, setDisplayName] = useState("");
   const [healthConsent, setHealthConsent] = useState(false);
   const [termsConsent, setTermsConsent] = useState(false);
@@ -362,15 +363,26 @@ const Auth = () => {
                       <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                       <Input
                         id="password"
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         placeholder="••••••••"
                         value={password}
                         onChange={(e) => {
                           setPassword(e.target.value);
                           if (errors.password) setErrors({ ...errors, password: undefined });
                         }}
-                        className={`pl-10 bg-muted/20 border-border/50 rounded-xl h-12 ${errors.password ? "border-destructive" : ""}`}
+                        className={`pl-10 pr-10 bg-muted/20 border-border/50 rounded-xl h-12 ${errors.password ? "border-destructive" : ""}`}
                       />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      >
+                        {showPassword ? (
+                          <EyeOff className="w-4 h-4" />
+                        ) : (
+                          <Eye className="w-4 h-4" />
+                        )}
+                      </button>
                     </div>
                     {errors.password && <p className="text-destructive text-xs">{errors.password}</p>}
                   </div>
@@ -383,14 +395,14 @@ const Auth = () => {
                       <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                       <Input
                         id="confirmPassword"
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         placeholder="••••••••"
                         value={confirmPassword}
                         onChange={(e) => {
                           setConfirmPassword(e.target.value);
                           if (errors.confirmPassword) setErrors({ ...errors, confirmPassword: undefined });
                         }}
-                        className={`pl-10 bg-muted/20 border-border/50 rounded-xl h-12 ${errors.confirmPassword ? "border-destructive" : ""}`}
+                        className={`pl-10 pr-10 bg-muted/20 border-border/50 rounded-xl h-12 ${errors.confirmPassword ? "border-destructive" : ""}`}
                       />
                     </div>
                     {errors.confirmPassword && <p className="text-destructive text-xs">{errors.confirmPassword}</p>}
