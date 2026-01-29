@@ -8,7 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
-import { AppLayout } from "@/components/layout/AppLayout";
+
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 
@@ -125,7 +125,6 @@ const Dashboard = () => {
   }
 
   return (
-    <AppLayout>
       <div className="space-y-8">
         {/* Header with Date */}
         <div className="flex items-center justify-between">
@@ -332,7 +331,6 @@ const Dashboard = () => {
           </Link>
         </div>
       </div>
-    </AppLayout>
   );
 };
 

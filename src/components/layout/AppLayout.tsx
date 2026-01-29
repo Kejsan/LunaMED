@@ -1,17 +1,16 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Menu } from "lucide-react";
+import { useNavigate, Outlet } from "react-router-dom";
+import { Menu, Bell } from "lucide-react";
 import { AppSidebar } from "./AppSidebar";
 import { ThemeToggle } from "./ThemeToggle";
 import { BackgroundEffects } from "./BackgroundEffects";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
-import { Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface AppLayoutProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   title?: string;
   subtitle?: string;
 }
@@ -55,7 +54,7 @@ export const AppLayout = ({ children, title, subtitle }: AppLayoutProps) => {
         )}
 
         {/* Main Content */}
-        <main className="flex-1 overflow-y-auto relative">
+        <main className="flex-1 overflow-y-auto relative w-full">
           {/* Top Header */}
           <header
             className={cn(
@@ -92,7 +91,9 @@ export const AppLayout = ({ children, title, subtitle }: AppLayoutProps) => {
           </header>
 
           {/* Page Content */}
-          <div className="p-6 max-w-7xl mx-auto">{children}</div>
+          <div className="p-6 max-w-7xl mx-auto">
+            {children || <Outlet />}
+          </div>
         </main>
       </div>
     </div>

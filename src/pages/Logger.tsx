@@ -8,7 +8,7 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { AppLayout } from "@/components/layout/AppLayout";
+
 import { format, differenceInDays } from "date-fns";
 
 type FlowIntensity = "none" | "light" | "medium" | "heavy";
@@ -207,7 +207,6 @@ const Logger = () => {
   const isToday = format(currentDate, "yyyy-MM-dd") === format(new Date(), "yyyy-MM-dd");
 
   return (
-    <AppLayout>
       <div className="max-w-2xl mx-auto space-y-6">
         {/* Date Navigation */}
         <div className="flex items-center justify-between">
@@ -417,7 +416,6 @@ const Logger = () => {
           <Check className="w-4 h-4" />
         </Button>
       </div>
-    </AppLayout>
   );
 };
 

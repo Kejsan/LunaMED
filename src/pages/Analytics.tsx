@@ -6,7 +6,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
-import { AppLayout } from "@/components/layout/AppLayout";
+
 import { format, differenceInDays, subMonths } from "date-fns";
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts";
 
@@ -126,16 +126,13 @@ const Analytics = () => {
 
   if (loading) {
     return (
-      <AppLayout>
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="animate-pulse text-muted-foreground">{t("loading")}</div>
-        </div>
-      </AppLayout>
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="animate-pulse text-muted-foreground">{t("loading")}</div>
+      </div>
     );
   }
 
   return (
-    <AppLayout>
       <div className="space-y-8">
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
@@ -311,7 +308,6 @@ const Analytics = () => {
           )}
         </div>
       </div>
-    </AppLayout>
   );
 };
 

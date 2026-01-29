@@ -7,6 +7,7 @@ import {
   BookOpen,
   PlusCircle,
   Settings,
+  LogOut,
 } from "lucide-react";
 import { Logo } from "./Logo";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -30,7 +31,7 @@ const navItems = [
 
 export const AppSidebar = ({ isOpen = true, onClose }: SidebarProps) => {
   const { isCelestial } = useTheme();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const location = useLocation();
 
   return (
@@ -103,23 +104,38 @@ export const AppSidebar = ({ isOpen = true, onClose }: SidebarProps) => {
               isCelestial ? "border-white/10" : "border-slate-200"
             )}
           >
-            <div className="flex items-center gap-3 p-2 rounded-xl">
-              <Avatar
-                className={cn(
-                  "h-10 w-10 border-2",
-                  isCelestial ? "border-purple-500" : "border-teal-500"
-                )}
-              >
-                <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-white font-bold">
-                  {user.email?.charAt(0).toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-              <div className="text-left overflow-hidden">
-                <p className="text-sm font-bold truncate">
-                  {user.user_metadata?.display_name || "User"}
-                </p>
-                <p className="text-xs opacity-60 truncate">{user.email}</p>
+            <div className="flex items-center justify-between p-2 rounded-xl group/profile">
+              <div className="flex items-center gap-3 overflow-hidden">
+                <Avatar
+                  className={cn(
+                    "h-10 w-10 border-2",
+                    isCelestial ? "border-purple-500" : "border-teal-500"
+                  )}
+                >
+                  <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-white font-bold">
+                    {user.email?.charAt(0).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="text-left overflow-hidden">
+                  <p className="text-sm font-bold truncate">
+                    {user.user_metadata?.display_name || "User"}
+                  </p>
+                  <p className="text-xs opacity-60 truncate">{user.email}</p>
+                </div>
               </div>
+              
+              <button
+                onClick={() => signOut()}
+                className={cn(
+                  "p-2 rounded-lg transition-colors",
+                  isCelestial 
+                    ? "hover:bg-white/10 text-white/50 hover:text-white" 
+                    : "hover:bg-slate-100 text-slate-400 hover:text-slate-900"
+                )}
+                title="Sign out"
+              >
+                <LogOut className="w-5 h-5" />
+              </button>
             </div>
           </div>
         )}

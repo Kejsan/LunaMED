@@ -4,7 +4,7 @@ import { Search, BookOpen, Heart, Shield, UtensilsCrossed, ChevronRight, Star } 
 import { Input } from "@/components/ui/input";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { AppLayout } from "@/components/layout/AppLayout";
+
 
 interface Article {
   id: string;
@@ -119,7 +119,6 @@ const Encyclopedia = () => {
   const featuredArticle = articles.find(a => a.id === "7");
 
   return (
-    <AppLayout>
       <div className="space-y-8">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto">
@@ -244,7 +243,6 @@ const Encyclopedia = () => {
           </div>
         </div>
       </div>
-    </AppLayout>
   );
 };
 

@@ -7,7 +7,7 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { AppLayout } from "@/components/layout/AppLayout";
+
 import { format, subMonths } from "date-fns";
 
 interface Profile {
@@ -130,16 +130,13 @@ const Reports = () => {
 
   if (loading) {
     return (
-      <AppLayout>
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="animate-pulse text-muted-foreground">{t("preparingReport")}</div>
-        </div>
-      </AppLayout>
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="animate-pulse text-muted-foreground">{t("preparingReport")}</div>
+      </div>
     );
   }
 
   return (
-    <AppLayout>
       <div className="max-w-4xl mx-auto space-y-8">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -286,7 +283,6 @@ const Reports = () => {
           </div>
         </div>
       </div>
-    </AppLayout>
   );
 };
 

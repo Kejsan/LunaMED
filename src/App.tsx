@@ -20,6 +20,7 @@ import Article from "./pages/Article";
 import Settings from "./pages/Settings";
 import Install from "./pages/Install";
 import NotFound from "./pages/NotFound";
+import { AppLayout } from "@/components/layout/AppLayout";
 
 const queryClient = new QueryClient();
 
@@ -35,17 +36,22 @@ const App = () => (
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/auth" element={<Auth />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/setup" element={<Setup />} />
-                <Route path="/logger" element={<Logger />} />
-                <Route path="/insight" element={<Insight />} />
-                <Route path="/calendar" element={<Calendar />} />
-                <Route path="/analytics" element={<Analytics />} />
-                <Route path="/reports" element={<Reports />} />
-                <Route path="/encyclopedia" element={<Encyclopedia />} />
-                <Route path="/article" element={<Article />} />
-                <Route path="/settings" element={<Settings />} />
                 <Route path="/install" element={<Install />} />
+                
+                {/* Protected Routes wrapped in AppLayout */}
+                <Route element={<AppLayout />}>
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/setup" element={<Setup />} />
+                  <Route path="/logger" element={<Logger />} />
+                  <Route path="/insight" element={<Insight />} />
+                  <Route path="/calendar" element={<Calendar />} />
+                  <Route path="/analytics" element={<Analytics />} />
+                  <Route path="/reports" element={<Reports />} />
+                  <Route path="/encyclopedia" element={<Encyclopedia />} />
+                  <Route path="/article" element={<Article />} />
+                  <Route path="/settings" element={<Settings />} />
+                </Route>
+
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </LanguageProvider>

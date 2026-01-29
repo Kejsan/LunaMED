@@ -6,7 +6,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
-import { AppLayout } from "@/components/layout/AppLayout";
+
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isToday, differenceInDays, addMonths, subMonths, isSameDay } from "date-fns";
 
 interface Cycle {
@@ -144,7 +144,6 @@ const Calendar = () => {
   };
 
   return (
-    <AppLayout>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
@@ -273,7 +272,6 @@ const Calendar = () => {
           </div>
         </div>
       </div>
-    </AppLayout>
   );
 };
 

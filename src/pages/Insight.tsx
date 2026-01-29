@@ -6,7 +6,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
-import { AppLayout } from "@/components/layout/AppLayout";
+
 import { format, differenceInDays } from "date-fns";
 
 interface DailyLog {
@@ -102,16 +102,13 @@ const Insight = () => {
 
   if (loading) {
     return (
-      <AppLayout>
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="animate-pulse text-muted-foreground">{t("loadingInsights")}</div>
-        </div>
-      </AppLayout>
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="animate-pulse text-muted-foreground">{t("loadingInsights")}</div>
+      </div>
     );
   }
 
   return (
-    <AppLayout>
       <div className="max-w-3xl mx-auto space-y-8">
         {/* Success Banner */}
         {todayLog && (
@@ -264,7 +261,6 @@ const Insight = () => {
           </Button>
         </div>
       </div>
-    </AppLayout>
   );
 };
 
